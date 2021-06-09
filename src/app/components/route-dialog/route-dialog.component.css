@@ -1,0 +1,4 @@
+.route-form__fields-wrapper {
+  display: flex;
+  flex-direction: column;
+}

@@ -1,1 +1,9 @@
-<app-routes-table></app-routes-table>
+<app-routes-table [sourceData]="routes" (editOrDeleteRoute)="editOrDeleteRoute($event)"></app-routes-table>
+<button
+  class="create-route-button"
+  mat-raised-button
+  color="primary"
+  (click)="openDialog()"
+>
+  Создать маршрут
+</button>

@@ -1,4 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
+import { FormControl, FormGroup, ValidationErrors, Validators } from '@angular/forms';
+import { Route } from '../../types/TableData';
+import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-route-dialog',
@@ -6,10 +9,23 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./route-dialog.component.css']
 })
 export class RouteDialogComponent implements OnInit {
+  public routeFormGroup: FormGroup = new FormGroup({
+    address: new FormControl('', [Validators.required, this.ipv4Validator]),
+    mask: new FormControl('', Validators.required),
+    gateway: new FormControl('', [Validators.required, this.ipv4Validator]),
+    interface: new FormControl('')
+  })
 
-  constructor() { }
+  constructor(@Inject(MAT_DIALOG_DATA) public routes: Route[]) { }
 
   ngOnInit(): void {
+  }
+
+  private ipv4Validator(control: FormControl): ValidationErrors | null {
+    if (!control.value?.match(/^((25[0-5]|(2[0-4]|1\d|[1-9]|)\d)(\.(?!$)|$)){4}$/)) {
+      return {ipv4Validator: 'Допускается только ввод корректных IPv4-адресов'};
+    }
+    return null;
   }
 
 }

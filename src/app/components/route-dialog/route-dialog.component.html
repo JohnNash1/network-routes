@@ -1,1 +1,42 @@
-<p>route-dialog works!</p>
+<section class="route-form" [formGroup]="routeFormGroup">
+  <h2 class="route-form__title">Параметры статического маршрута</h2>
+  <div class="route-form__fields-wrapper">
+    <mat-form-field appearance="standard">
+      <mat-label>Адрес сети назначения</mat-label>
+      <input matInput type="text" formControlName="address">
+      <mat-error *ngIf="routeFormGroup.hasError('required', 'address')">Поле обязательно для заполнения</mat-error>
+      <mat-error *ngIf="routeFormGroup.hasError('ipv4Validator', 'address')">
+        {{routeFormGroup.get('address').errors.ipv4Validator}}
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="standard">
+      <mat-label>Маска подсети</mat-label>
+      <mat-select formControlName="mask">
+        <mat-option *ngFor="let route of routes" [value]="route.mask">{{route.mask}}</mat-option>
+      </mat-select>
+      <mat-error *ngIf="routeFormGroup.hasError('required', 'mask')">Поле обязательно для заполнения</mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="standard">
+      <mat-label>Адрес шлюза</mat-label>
+      <input matInput type="text" formControlName="gateway">
+      <mat-error *ngIf="routeFormGroup.hasError('required', 'gateway')">Поле обязательно для заполнения</mat-error>
+      <mat-error *ngIf="routeFormGroup.hasError('ipv4Validator', 'gateway')">
+        {{routeFormGroup.get('gateway').errors.ipv4Validator}}
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="standard">
+      <mat-label>Интерфейс</mat-label>
+      <mat-select formControlName="interface">
+        <mat-option *ngFor="let route of routes" [value]="route.interface">{{route.interface}}</mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+
+  <mat-dialog-actions>
+    <button mat-button mat-dialog-close>Отменить</button>
+    <button mat-button [mat-dialog-close]="routeFormGroup.value" [disabled]="routeFormGroup.status === 'INVALID'">Сохранить</button>
+  </mat-dialog-actions>
+</section>

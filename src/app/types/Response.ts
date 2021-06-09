@@ -1,10 +1,21 @@
-import { Routes } from "./TableData";
+import { Route } from "./TableData";
 
-export interface Response {
+interface Response {
   message: string;
   code: number;
   successful: boolean;
+}
+
+interface GetAllRoutesResponse extends Response {
   payload: {
-    routes: Routes[] | null;
+    routes: Route[] | null;
   }
 }
+
+interface PostNewRouteResponse extends Response {
+  payload: {
+    uuid: string
+  }
+}
+
+export { Response, GetAllRoutesResponse, PostNewRouteResponse }

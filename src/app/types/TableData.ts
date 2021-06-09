@@ -4,9 +4,9 @@ interface TableData {
   interface: string;
 }
 
-interface Routes extends TableData {
+interface Route extends TableData {
   uuid: string;
   mask: string;
 }
 
-export { TableData, Routes }
+export { TableData, Route }
