@@ -13,7 +13,7 @@
     <mat-form-field appearance="standard">
       <mat-label>Маска подсети</mat-label>
       <mat-select formControlName="mask">
-        <mat-option *ngFor="let route of routes" [value]="route.mask">{{route.mask}}</mat-option>
+        <mat-option *ngFor="let route of data.routes" [value]="route.mask">{{route.mask}}</mat-option>
       </mat-select>
       <mat-error *ngIf="routeFormGroup.hasError('required', 'mask')">Поле обязательно для заполнения</mat-error>
     </mat-form-field>
@@ -30,13 +30,23 @@
     <mat-form-field appearance="standard">
       <mat-label>Интерфейс</mat-label>
       <mat-select formControlName="interface">
-        <mat-option *ngFor="let route of routes" [value]="route.interface">{{route.interface}}</mat-option>
+        <mat-option *ngFor="let route of data.routes" [value]="route.interface">{{route.interface}}</mat-option>
       </mat-select>
     </mat-form-field>
   </div>
 
   <mat-dialog-actions>
     <button mat-button mat-dialog-close>Отменить</button>
-    <button mat-button [mat-dialog-close]="routeFormGroup.value" [disabled]="routeFormGroup.status === 'INVALID'">Сохранить</button>
+    <button
+      mat-button
+      [mat-dialog-close]="{value: routeFormGroup.value, selectedRouteId: data.selectedRoute?.uuid, isDelete: false}"
+      [disabled]="routeFormGroup.status === 'INVALID'">
+      Сохранить
+    </button>
+    <button
+      *ngIf="data.selectedRoute?.uuid"
+      mat-button [mat-dialog-close]="{value: routeFormGroup.value, selectedRouteId: data.selectedRoute.uuid, isDelete: true}">
+      Удалить
+    </button>
   </mat-dialog-actions>
 </section>

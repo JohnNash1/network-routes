@@ -12,10 +12,10 @@ interface GetAllRoutesResponse extends Response {
   }
 }
 
-interface PostNewRouteResponse extends Response {
+interface RouteResponse extends Response {
   payload: {
     uuid: string
   }
 }
 
-export { Response, GetAllRoutesResponse, PostNewRouteResponse }
+export { Response, GetAllRoutesResponse, RouteResponse }

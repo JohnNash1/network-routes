@@ -16,9 +16,10 @@ export class RouteDialogComponent implements OnInit {
     interface: new FormControl('')
   })
 
-  constructor(@Inject(MAT_DIALOG_DATA) public routes: Route[]) { }
+  constructor(@Inject(MAT_DIALOG_DATA) public data: {routes: Route[], selectedRoute?: Route}) { }
 
   ngOnInit(): void {
+    this.patchFormGroupValue();
   }
 
   private ipv4Validator(control: FormControl): ValidationErrors | null {
@@ -26,6 +27,17 @@ export class RouteDialogComponent implements OnInit {
       return {ipv4Validator: 'Допускается только ввод корректных IPv4-адресов'};
     }
     return null;
+  }
+
+  private patchFormGroupValue(): void {
+    if (this.data.selectedRoute) {
+      this.routeFormGroup.patchValue({
+        address: this.data.selectedRoute.address,
+        mask: this.data.selectedRoute.mask,
+        gateway: this.data.selectedRoute.gateway,
+        interface: this.data.selectedRoute.interface
+      })
+    }
   }
 
 }

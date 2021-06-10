@@ -1,9 +1,10 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { Route, TableData } from '../types/TableData';
-import { GetAllRoutesResponse, PostNewRouteResponse } from '../types/Response';
+import { Route } from '../types/TableData';
+import { GetAllRoutesResponse, RouteResponse } from '../types/Response';
 import { map } from 'rxjs/operators';
+import { DialogResult } from '../types/DialogResult';
 
 @Injectable({
   providedIn: 'root'
@@ -19,7 +20,14 @@ export class RoutesListService {
     )
   }
 
-  public saveNewRoute(routeToSave: TableData): Observable<PostNewRouteResponse> {
-    return this.httpClient.post<PostNewRouteResponse>(this.url, routeToSave)
+  public saveRoute(dataToSave: DialogResult): Observable<RouteResponse> {
+    if (dataToSave.selectedRouteId) {
+      return this.httpClient.put<RouteResponse>(`${this.url}/${dataToSave.selectedRouteId}`, dataToSave.value)
+    }
+    return this.httpClient.post<RouteResponse>(this.url, dataToSave.value)
+  }
+
+  public deleteRoute(dataToSave: DialogResult): Observable<RouteResponse> {
+    return this.httpClient.delete<RouteResponse>(`${this.url}/${dataToSave.selectedRouteId}`)
   }
 }

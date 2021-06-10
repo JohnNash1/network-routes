@@ -4,6 +4,8 @@ import { RoutesListService } from '../../services/routes-list.service';
 import { MatDialog } from '@angular/material/dialog';
 import { RouteDialogComponent } from '../route-dialog/route-dialog.component';
 import { take } from 'rxjs/operators';
+import { DialogResult } from '../../types/DialogResult';
+import { SaveErrorDialogComponent } from '../save-error-dialog/save-error-dialog.component';
 
 @Component({
   selector: 'app-layout',
@@ -31,11 +33,17 @@ export class LayoutComponent implements OnInit {
   }
 
   public openDialog(): void {
-    this.dialog.open(RouteDialogComponent, {data: this.routes}).afterClosed().subscribe(
-      result => {
+    this.dialog.open(RouteDialogComponent, {data: {routes: this.routes}}).afterClosed().subscribe(
+      (result: DialogResult) => {
         if (result) {
-          this.routesListService.saveNewRoute(result).subscribe(
-            _ => this.getRoutes()
+          this.routesListService.saveRoute(result).subscribe(
+            routeResponse => {
+              if (!routeResponse.successful) {
+                this.dialog.open(SaveErrorDialogComponent, {data: routeResponse.message})
+              } else {
+                this.getRoutes()
+              }
+            }
           )
         }
       }
@@ -43,6 +51,16 @@ export class LayoutComponent implements OnInit {
   }
 
   public editOrDeleteRoute(selectedRoute: Route): void {
-    console.log(selectedRoute)
+    this.dialog.open(RouteDialogComponent, {data: {routes: this.routes, selectedRoute}}).afterClosed().subscribe(
+      (result: DialogResult) => {
+        if (result) {
+          !result.isDelete ?
+            this.routesListService.saveRoute(result)
+              .subscribe(_ => this.getRoutes()) :
+            this.routesListService.deleteRoute(result)
+              .subscribe(_ => this.getRoutes())
+        }
+      }
+    )
   }
 }

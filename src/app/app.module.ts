@@ -15,13 +15,15 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatCardModule } from '@angular/material/card';
 import { MatSortModule } from '@angular/material/sort';
+import { SaveErrorDialogComponent } from './components/save-error-dialog/save-error-dialog.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     RoutesTableComponent,
     RouteDialogComponent,
-    LayoutComponent
+    LayoutComponent,
+    SaveErrorDialogComponent
   ],
   imports: [
     BrowserModule,
